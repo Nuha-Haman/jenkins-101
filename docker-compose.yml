@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+      - 50000:50000
+    container_name: jenkins
+    restart: always
+    # privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/jenkins_home:/var/jenkins_home
+      - /var/jenkins-docker-certs:/certs/client:ro 
+  socket-service:
+    image: alpine/socat:latest
+    # ports:
+    #   - "3000:3000"
+    depends_on:
+      - jenkins
